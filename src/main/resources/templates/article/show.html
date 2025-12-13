@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${article.title}">글 상세</title>
+</head>
+<body>
+
+<h1 th:text="${article.title}">제목</h1>
+<p th:text="${article.content}">내용</p>
+
+<hr>
+
+<a th:href="@{/article}">목록으로</a>
+
+<hr>
+
+<!-- ✅ 댓글 목록 -->
+<h2>댓글</h2>
+
+<div th:if="${#lists.isEmpty(comments)}">
+    <p>아직 댓글이 없습니다.</p>
+</div>
+
+<ul th:if="${!#lists.isEmpty(comments)}">
+    <li th:each="comment : ${comments}">
+        <p>
+            <b th:text="${comment.nickname}">닉네임</b> :
+            <span th:text="${comment.body}">댓글 내용</span>
+        </p>
+
+        <!-- 댓글 수정 폼 (간단 버전) -->
+        <form th:action="@{|/comments/${comment.id}/update|}" method="post" style="margin-bottom: 5px;">
+            <input type="text" name="nickname" th:value="${comment.nickname}" placeholder="닉네임">
+            <input type="text" name="body" th:value="${comment.body}" placeholder="댓글 내용">
+            <button type="submit">수정</button>
+        </form>
+
+        <!-- 댓글 삭제 -->
+        <form th:action="@{|/comments/${comment.id}/delete|}" method="post" style="display:inline;">
+            <button type="submit">삭제</button>
+        </form>
+
+        <hr>
+    </li>
+</ul>
+
+<h3>새 댓글 작성</h3>
+<form th:action="@{|/article/${article.id}/comments|}" method="post">
+    <div>
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" name="nickname" placeholder="닉네임">
+    </div>
+    <div>
+        <label for="body">내용</label><br>
+        <textarea id="body" name="body" rows="3" cols="60" placeholder="댓글을 입력하세요"></textarea>
+    </div>
+    <button type="submit">댓글 작성</button>
+</form>
+
+</body>
+</html>
