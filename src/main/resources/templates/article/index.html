@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>penote</title>
+</head>
+<body>
+<div>
+    <img th:src="@{/images/penote_logo.png}" alt="penote_logo" />
+</div>
+<table>
+    <tr>
+        <td>이 주의 최다 조회수 작품</td>
+        <td>이 주의 최다 댓글 작품 </td>
+        <td rowspan="3">
+            <form th:action="@{/user/login}" method="post">
+                <div>
+                    <label for="userId">아이디</label>
+                    <input type="text" id="userId" name="userId">
+                </div>
+                <div>
+                    <label for="userPassword">비밀번호</label>
+                    <input type="password" id="userPassword" name="userPassword">
+                </div>
+                <button type="submit">로그인</button>
+                <button type="button"
+                        onclick="location.href='/user/account'">
+                    회원 가입
+                </button>
+            </form>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td> content 1</td>
+        <td> content 2</td>
+    </tr>
+    <tr>
+        <td> writer 1</td>
+        <td> writer 2</td>
+    </tr>
+</table>
+</body>
+</html>

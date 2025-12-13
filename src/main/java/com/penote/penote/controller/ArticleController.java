@@ -16,6 +16,14 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
+    @Controller
+    public class HomeController {
+        @GetMapping("/")
+        public String home() {
+            return "article/index";
+        }
+    }
+
     @Autowired
     private ArticleRepository articleRepository;
 
@@ -27,7 +35,7 @@ public class ArticleController {
     public String index(Model model) {
         List<Article> articleList = articleRepository.findAll();
         model.addAttribute("articleList", articleList);
-        return "article/index2";
+        return "article/list";
     }
 
     // 새 글 작성 폼
