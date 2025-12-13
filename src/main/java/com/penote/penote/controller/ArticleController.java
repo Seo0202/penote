@@ -27,7 +27,7 @@ public class ArticleController {
     public String index(Model model) {
         List<Article> articleList = articleRepository.findAll();
         model.addAttribute("articleList", articleList);
-        return "create";
+        return "article/index2";
     }
 
     // 새 글 작성 폼
