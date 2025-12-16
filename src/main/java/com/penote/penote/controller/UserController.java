@@ -5,6 +5,8 @@ import com.penote.penote.entity.User;
 import com.penote.penote.repository.ArticleRepository;
 import com.penote.penote.repository.UserRepository;
 import com.penote.penote.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,18 +45,30 @@ public class UserController {
 
     @PostMapping("/user/login")
     public String login(@RequestParam String userId,
-                        @RequestParam String userPassword) {
+                        @RequestParam String userPassword, HttpServletRequest request) {
 
         User user = userRepository.findByUserId(userId).orElse(null);
         if (user == null)
-            return "redirect:/error/error.html";
+            return "errors/login_error";
 
         if(!userService.distinct(userPassword, user))
-            return "redirect:/error/error.html";
+            return "errors/login_error";
 
-        return "article/list";
+        HttpSession session = request.getSession();
+        session.setAttribute("loginUser", user);
 
+        return "redirect:/user/loginWelcome";
 
+    }
+
+    @GetMapping("/user/welcome")
+    public String userWelcome(HttpServletRequest request, Model model) {
+
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("loginUser");
+
+        model.addAttribute("user", user);
+        return "user/accountWelcome";
     }
 
     @GetMapping("/article/list")

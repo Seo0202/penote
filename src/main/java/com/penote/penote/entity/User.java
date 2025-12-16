@@ -23,7 +23,7 @@ public class User {
     private BigDecimal userStarBalance;
     private String userProfilePicture;
 
-    public Object getPassword() {
+    public Object getUserPassword() {
         return userPassword;
     }
 }
