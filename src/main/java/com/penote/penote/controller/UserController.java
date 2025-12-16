@@ -61,14 +61,9 @@ public class UserController {
 
     }
 
-    @GetMapping("/user/welcome")
-    public String userWelcome(HttpServletRequest request, Model model) {
-
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("loginUser");
-
-        model.addAttribute("user", user);
-        return "user/accountWelcome";
+    @GetMapping("/user/loginWelcome")
+    public String loginWelcome() {
+        return "user/loginWelcome";
     }
 
     @GetMapping("/article/list")
