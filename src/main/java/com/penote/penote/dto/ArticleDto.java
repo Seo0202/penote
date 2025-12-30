@@ -1,6 +1,7 @@
 package com.penote.penote.dto;
 
 import com.penote.penote.entity.Article;
+import com.penote.penote.entity.User;
 import lombok.*;
 
 @Getter
@@ -8,11 +9,8 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleForm {
+public class ArticleDto {
     private String title;
     private String content;
 
-    public Article toEntity() {
-        return new Article(null, title, content);
-    }
 }

@@ -8,7 +8,7 @@
 //@ToString
 //@AllArgsConstructor
 //@NoArgsConstructor
-//public class ArticleForm {
+//public class ArticleDto {
 //    private String title;
 //    private String content;
 //

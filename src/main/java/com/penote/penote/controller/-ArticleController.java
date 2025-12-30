@@ -1,7 +1,7 @@
 //package com.penote.penote.controller;
 //
 //import com.penote.penote.entity.Article;
-//import com.penote.penote.dto.ArticleForm;
+//import com.penote.penote.dto.ArticleDto;
 //import com.penote.penote.repository.ArticleRepository;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@
 //    }
 //
 //    @PostMapping("/article/create")
-//    public String createArticleForm(ArticleForm form) {
+//    public String createArticleForm(ArticleDto form) {
 //        Article saved = articleRepository.save(form.toEntity());
 //        return "redirect:/article/" + saved.getId();
 //    }
