@@ -80,4 +80,15 @@ public class ArticleController {
 
         return "article/show";
     }
+
+    @GetMapping("/article/my")
+    public String myList(HttpSession session, Model model) {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) return "redirect:/login";
+
+        List<Article> articleList = articleRepository.findByWriter(loginUser);
+        model.addAttribute("myArticleList", articleList);
+        return "article/list";
+    }
+
 }
