@@ -18,13 +18,11 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    @Controller
-    public class HomeController {
-        @GetMapping("/")
+    @GetMapping("/")
         public String home() {
             return "article/index";
         }
-    }
+
 
     @Autowired
     private ArticleRepository articleRepository;

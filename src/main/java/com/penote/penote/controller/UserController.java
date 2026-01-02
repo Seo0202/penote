@@ -8,13 +8,12 @@ import com.penote.penote.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.nio.file.attribute.UserPrincipalLookupService;
 
 @Controller
 public class UserController {
@@ -28,18 +27,24 @@ public class UserController {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;  // 추가!
+
     @GetMapping("/user/account")
-    public String account()
-    { return "user/account"; }
+    public String account() {
+        return "user/account";
+    }
 
     @PostMapping("/user/accountMade")
-    public String accountMade(UserDto dto) {
+    public String accountMade(UserDto dto, HttpSession session) {
         User user = new User();
         user.setUserId(dto.getUserId());
-        user.setUserPassword(dto.getUserPassword());
+        user.setUserPassword(passwordEncoder.encode(dto.getUserPassword()));  // ✅ 암호화!
         user.setUserNickname(dto.getUserNickname());
 
         userRepository.save(user);
+
+        session.setAttribute("loginUser", user);  // 세션에 저장
         return "user/accountWelcome";
     }
 
@@ -51,14 +56,13 @@ public class UserController {
         if (user == null)
             return "errors/login_error";
 
-        if(!userService.distinct(userPassword, user))
+        if (!userService.match(userPassword, user))
             return "errors/login_error";
 
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", user);
 
         return "redirect:/user/loginWelcome";
-
     }
 
     @GetMapping("/user/loginWelcome")
@@ -71,5 +75,4 @@ public class UserController {
         model.addAttribute("articles", articleRepository.findAll());
         return "article/list";
     }
-
 }

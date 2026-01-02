@@ -1,18 +1,25 @@
 package com.penote.penote.service;
 
 import com.penote.penote.entity.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-   public boolean distinct (String userPassword, User user) {
-       if (userPassword == null)
-           return false;
+    private final PasswordEncoder passwordEncoder;
 
-       if (!user.getUserPassword().equals(userPassword))
-           return false;
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
-       else return true;
-   }
+    public boolean match(String rawPassword, User user) {
+        if (rawPassword == null || user == null)
+            return false;
+
+        return passwordEncoder.matches(
+                rawPassword,           // 사용자가 입력한 비밀번호 (평문)
+                (String) user.getUserPassword() // DB에 저장된 암호화된 비밀번호
+        );
+    }
 }
