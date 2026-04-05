@@ -30,6 +30,16 @@
     </tr>
     </tbody>
 </table>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // 서버에서 msg가 넘어오면 그 값을, 없으면 null을 대입합니다.
+    var message = /*[[${msg}]]*/ null;
 
+    // message가 null도 아니고, 빈 문자열도 아닐 때만 팝업을 띄웁니다.
+    if (message !== null && message !== undefined && message !== "") {
+        alert(message);
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

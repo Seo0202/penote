@@ -1,5 +1,6 @@
 package com.penote.penote.entity;
 
+import com.penote.penote.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,11 @@ public class Article {
 
     @Lob
     private String content;
+    public UserDto getUserDto() {
+        return UserDto.fromEntity(this.writer);
+    }
 
+    public User getWriter() {
+        return this.writer; // DTO로 바꾸지 말고 엔티티 그대로 리턴!
+    }
 }

@@ -1,7 +1,5 @@
 package com.penote.penote.dto;
 
-import com.penote.penote.entity.Article;
-import com.penote.penote.entity.Comment;
 import com.penote.penote.entity.User;
 import lombok.*;
 
@@ -19,6 +17,13 @@ public class UserDto {
     private String userNickname;
     private BigDecimal userStarBalance;
     private String userProfilePicture;
+
+    public static UserDto fromEntity(User writer) {
+        UserDto userDto = new UserDto();
+        userDto.setId(writer.getId());
+        userDto.setUserId(writer.getUserId());
+        return userDto;
+    }
 
 
     public User toEntity() {

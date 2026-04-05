@@ -1,16 +1,25 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>로그인 성공</title>
 </head>
 <body>
 
-<p>
-    <span th:text="${session.loginUser.userNickname}">닉네임</span>님 반갑습니다!
-</p>
+<div sec:authorize="isAuthenticated()">
+    <h2>환영합니다!</h2>
+    <p>
+        아이디: <span sec:authentication="name"></span>
+    </p>
 
-<a th:href="@{/article/my}"> 새 글을 작성하러 가 볼 까요?</a>
+    <hr>
+    <a th:href="@{/article/my}">새 글을 작성하러 가 볼까요?</a>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    로그인이 필요합니다.
+</div>
 
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.penote.penote.service;
 
+import com.penote.penote.Role;
 import com.penote.penote.dto.CommentDto;
 import com.penote.penote.entity.Article;
 import com.penote.penote.entity.Comment;
+import com.penote.penote.entity.User;
 import com.penote.penote.repository.ArticleRepository;
 import com.penote.penote.repository.CommentRepository;
 import jakarta.transaction.Transactional;
@@ -39,14 +41,16 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto update(Long id, CommentDto dto) {
+    public CommentDto update(Long id, CommentDto dto, User currentUser) {
         Comment target = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("댓글 수정 실패! 댓글이 없습니다."));
 
         if (dto.getId() != null && !dto.getId().equals(id)) {
             throw new IllegalArgumentException("댓글 수정 실패! id가 일치하지 않습니다.");
         }
-
+        if (!target.getUser().getUserId().equals(currentUser.getUserId()) && currentUser.getRole() != Role.ADMIN) {
+            throw new IllegalArgumentException("글 수정 권한이 없습니다.");
+        }
         target.setNickname(dto.getNickname());
         target.setBody(dto.getBody());
 
@@ -56,10 +60,14 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDto delete(Long id) {
+    public CommentDto delete(Long id, User currentUser) {
         Comment target = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("댓글 삭제 실패! 댓글이 없습니다."));
 
+
+        if (!target.getUser().getUserId().equals(currentUser.getUserId()) && currentUser.getRole() != Role.ADMIN) {
+            throw new IllegalArgumentException("글 삭제 권한이 없습니다.");
+        }
         commentRepository.delete(target);
         return CommentDto.createCommentDto(target);
     }
